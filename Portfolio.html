@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sharun Stephen — SAP ABAP Consultant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sap-blue: #0f69b0;
+    --sap-blue-dark: #0b5488;
+    --sap-blue-light: #d8e6f5;
+    --text-primary: #102a45;
+    --text-secondary: #4a5b71;
+    --text-muted: #67768b;
+    --border: #c9d6e5;
+    --bg-page: #eaf1fb;
+    --bg-card: #fbfdff;
+    --bg-alt: #eef4fd;
+    --green: #1f7b43;
+    --green-bg: #eaf7ec;
+    --orange: #be6e18;
+    --orange-bg: #fff3df;
+    --purple: #5f36a6;
+    --purple-bg: #f3ebff;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow-sm: 0 1px 8px rgba(16, 42, 69, 0.06);
+    --shadow-md: 0 10px 28px rgba(16, 42, 69, 0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: linear-gradient(180deg, #f5f8fc 0%, #f3f6fb 48%, #ffffff 100%);
+    line-height: 1.6;
+  }
+
+  /* ── SHELL BAR ── */
+  .shell {
+    background: #ffffff;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    border-bottom: 1px solid var(--border);
+  }
+  .shell-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .shell-brand .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--sap-blue);
+  }
+  .shell-name {
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .shell-role {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-left: 2px;
+  }
+  .shell-spacer { flex: 1; }
+  .shell-nav {
+    display: flex;
+    gap: 10px;
+  }
+  .shell-nav a {
+    color: var(--sap-blue-dark);
+    text-decoration: none;
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .shell-nav a:hover { background: var(--sap-blue); color: #fff; }
+  .shell-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--sap-blue);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(15, 76, 129, 0.18);
+  }
+  .hamburger {
+    display: none;
+    color: var(--sap-blue);
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    background: #ffffff;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a {
+    color: var(--sap-blue);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--bg-alt);
+  }
+  .mobile-nav a:last-child { border-bottom: none; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 32px 20px 20px;
+    background: linear-gradient(180deg, #eef4fb 0%, rgba(255,255,255,0.7) 100%);
+  }
+  .hero-inner {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .hero-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--sap-blue);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 30px;
+  }
+  .hero-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--sap-blue-light);
+    border: 2px solid var(--sap-blue);
+    color: var(--sap-blue);
+    font-size: 32px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .hero-text h1 {
+    font-size: clamp(26px, 4vw, 34px);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .hero-role {
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .hero-role .sep { color: var(--bg-alt); }
+  .hero-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .hero-tag {
+    background: var(--sap-blue-light);
+    color: var(--sap-blue-dark);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .hero-tag.accent {
+    background: var(--sap-blue);
+    color: #fff;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+    will-change: opacity, transform;
+  }
+  .reveal.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .card,
+  .proj-card,
+  .hero-card,
+  .quote-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .card:hover,
+  .proj-card:hover,
+  .hero-card:hover,
+  .quote-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(17, 42, 66, 0.12);
+  }
+
+  .quote-banner {
+    padding: 20px 0 0;
+    background: transparent;
+  }
+  .quote-card {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--sap-blue);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 22px 24px;
+    display: grid;
+    gap: 10px;
+    color: var(--text-primary);
+    min-height: 96px;
+    transition: opacity 0.45s ease, transform 0.45s ease, background-color 0.45s ease;
+  }
+  .quote-card.fade-out {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.99);
+  }
+  .quote-card.fade-in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  .quote-text,
+  .quote-author {
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .quote-text.hide,
+  .quote-author.hide {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .quote-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 54px;
+  }
+  .quote-author {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    padding: 0 20px;
+    background: transparent;
+  }
+  .stats-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .stat-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 18px 16px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .stat-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--sap-blue);
+    font-family: 'IBM Plex Mono', monospace;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 22px 20px 48px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { display: flex; flex-direction: column; gap: 18px; }
+
+  /* ── CONTENT ── */
+  .content { display: flex; flex-direction: column; gap: 18px; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow-sm);
+  }
+  .card-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--sap-blue-dark);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title i { color: var(--sap-blue); font-size: 16px; }
+
+  /* ── KV ROWS ── */
+  .kv { display: flex; flex-direction: column; gap: 0; }
+  .kv-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--bg-alt);
+    gap: 12px;
+    font-size: 13px;
+  }
+  .kv-row:last-child { border-bottom: none; }
+  .kv-key { color: var(--text-muted); flex-shrink: 0; }
+  .kv-val { color: var(--text-primary); font-weight: 600; text-align: right; }
+  .kv-val.blue { color: var(--sap-blue); }
+  .kv-val.green { color: var(--green); }
+
+  /* ── SKILL BARS ── */
+  .skill-list { display: flex; flex-direction: column; gap: 14px; }
+  .skill-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
+  .skill-name { color: var(--text-primary); font-weight: 600; }
+  .skill-pct { color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; }
+  .skill-track {
+    height: 8px;
+    background: var(--bg-alt);
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .skill-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--sap-blue);
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+  }
+  .skill-fill.g { background: var(--green); }
+  .skill-fill.o { background: var(--orange); }
+  .skill-fill.p { background: var(--purple); }
+
+  /* ── MODULE CHIPS ── */
+  .module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .module-chip {
+    background: #eef4fd;
+    border: 1px solid #d6e4f5;
+    border-radius: 999px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: var(--sap-blue-dark);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .module-chip i { font-size: 14px; }
+  .module-chip.g { background: var(--green-bg); border-color: #c8e7cd; color: var(--green); }
+  .module-chip.o { background: var(--orange-bg); border-color: #ffdeb1; color: var(--orange); }
+  .module-chip.p { background: var(--purple-bg); border-color: #dac8f9; color: var(--purple); }
+
+  /* ── CONTACT LINKS ── */
+  .contact-links { display: flex; flex-direction: column; gap: 12px; }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+    cursor: pointer;
+  }
+  .contact-link:hover { border-color: var(--sap-blue); background: var(--sap-blue-light); color: var(--sap-blue); }
+  .contact-link i { font-size: 18px; color: var(--sap-blue); flex-shrink: 0; }
+  .contact-link .cl-label { font-size: 10px; color: var(--text-muted); display: block; line-height: 1; }
+  .contact-link .cl-val { font-size: 12px; font-weight: 600; }
+
+  /* ── SECTION HEADING ── */
+  .sec-heading {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sec-heading i { color: var(--sap-blue); font-size: 18px; }
+
+  /* ── EXPERIENCE ── */
+  .exp-list { display: flex; flex-direction: column; gap: 16px; }
+  .exp-item {
+    display: flex;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--bg-alt);
+  }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 18px;
+    padding-top: 4px;
+  }
+  .exp-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--sap-blue);
+    border: 2px solid var(--sap-blue-light);
+    flex-shrink: 0;
+  }
+  .exp-dot.g { background: var(--green); border-color: var(--green-bg); }
+  .exp-dot.o { background: var(--orange); border-color: var(--orange-bg); }
+  .exp-line { width: 2px; flex: 1; background: var(--border); margin-top: 4px; min-height: 30px; }
+  .exp-body { flex: 1; }
+  .exp-role { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+  .exp-company { font-size: 13px; color: var(--sap-blue); font-weight: 600; margin-top: 3px; }
+  .exp-dates { font-size: 11px; color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; margin-top: 4px; margin-bottom: 8px; }
+  .exp-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+  .exp-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .chip { background: var(--bg-alt); border: 1px solid var(--border); color: var(--text-secondary); border-radius: 999px; padding: 4px 10px; font-size: 11px; }
+
+  /* ── PROJECT CARDS ── */
+  .proj-list { display: flex; flex-direction: column; gap: 16px; }
+  .proj-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    background: #eef5ff;
+    border-left: 4px solid var(--sap-blue);
+    transition: box-shadow 0.15s, transform 0.1s;
+  }
+  .proj-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .proj-card.g { border-left-color: var(--green); }
+  .proj-card.o { border-left-color: var(--orange); }
+  .proj-card.p { border-left-color: var(--purple); }
+  .proj-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 12px; }
+  .proj-name { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+  .proj-badge { font-size: 11px; padding: 5px 12px; border-radius: 999px; font-weight: 700; white-space: nowrap; flex-shrink: 0; background: var(--green-bg); color: var(--green); border: 1px solid #b7dfb0; }
+  .proj-badge.ongoing { background: var(--orange-bg); color: var(--orange); border-color: #ffc97a; }
+  .proj-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+
+  /* ── CERT CARDS ── */
+  .cert-list { display: flex; flex-direction: column; gap: 12px; }
+  .cert-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-card); transition: border-color 0.15s; }
+  .cert-item:hover { border-color: var(--sap-blue); }
+  .cert-icon { width: 42px; height: 42px; border-radius: 12px; background: var(--sap-blue-light); color: var(--sap-blue); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .cert-icon.g { background: var(--green-bg); color: var(--green); }
+  .cert-icon.o { background: var(--orange-bg); color: var(--orange); }
+  .cert-icon.p { background: var(--purple-bg); color: var(--purple); }
+  .cert-name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
+  .cert-meta { font-size: 11px; color: var(--text-muted); margin-top: 4px; font-family: 'IBM Plex Mono', monospace; }
+
+  /* ── AVAILABILITY BADGE ── */
+  .avail-badge { display: flex; align-items: center; gap: 10px; background: var(--green-bg); border: 1px solid #b7dfb0; border-radius: var(--radius-sm); padding: 12px 14px; font-size: 13px; color: var(--green); font-weight: 700; }
+  .avail-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+
+  /* ── FOOTER ── */
+  .footer { background: transparent; color: var(--text-muted); text-align: center; padding: 18px 20px; font-size: 12px; }
+  .footer span { color: var(--text-primary); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .shell-nav { display: none; }
+    .hamburger { display: flex; align-items: center; }
+    .hero-card { flex-direction: column; align-items: flex-start; text-align: left; }
+    .stats-inner { grid-template-columns: 1fr 1fr; }
+    .main { grid-template-columns: 1fr; }
+    .sidebar { order: 2; }
+    .content { order: 1; }
+    .module-grid { grid-template-columns: 1fr 1fr; }
+    .proj-header { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 520px) {
+    .stat-item { padding: 14px 12px; }
+    .module-grid { grid-template-columns: 1fr; }
+    .hero-avatar { width: 82px; height: 82px; }
+    .contact-link { padding: 10px 12px; }
+  }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .card, .proj-card, .cert-item { animation: fadeUp 0.4s ease both; }
+</style>
+</head>
+<body>
+
+<!-- SHELL BAR -->
+<nav class="shell">
+  <div class="shell-brand">
+    <div class="dot"></div>
+    <div>
+      <div class="shell-name">Sharun S S</div>
+      <div class="shell-role">SAP ABAP Consultant</div>
+    </div>
+  </div>
+  <div class="shell-spacer"></div>
+  <div class="shell-nav">
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="shell-avatar">SS</div>
+  <div class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <i class="ti ti-menu-2"></i>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="#experience" onclick="closeMenu()">Experience</a>
+  <a href="#projects" onclick="closeMenu()">Projects</a>
+  <a href="#skills" onclick="closeMenu()">Skills</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-card reveal">
+      <div class="hero-avatar">SS</div>
+      <div class="hero-text">
+        <h1>Sharun S S</h1>
+        <div class="hero-role">
+          <span>SAP ABAP Consultant</span>
+          <span class="sep">·</span>
+          <span>Bengaluru, India</span>
+        </div>
+        <div class="hero-tags">
+          <span class="hero-tag accent">ABAP</span>
+          <span class="hero-tag">S/4HANA</span>
+          <span class="hero-tag">RAP · CDS</span>
+          <span class="hero-tag">SAP BTP</span>
+          <span class="hero-tag">HR ABAP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="quote-banner" aria-label="Motivation quotes">
+  <div class="quote-card reveal" id="quoteCard">
+    <div class="quote-text" id="quoteText">“Code is like humor. When you have to explain it, it’s bad.”</div>
+    <div class="quote-author" id="quoteAuthor">— Cory House</div>
+  </div>
+</section>
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-user" aria-hidden="true"></i> About</div>
+      <div class="kv">
+        <div class="kv-row"><span class="kv-key">Location</span><span class="kv-val">Bengaluru, India</span></div>
+        <div class="kv-row"><span class="kv-key">Experience</span><span class="kv-val">8 months</span></div>
+        <div class="kv-row"><span class="kv-key">Focus</span><span class="kv-val">Public &amp; Private Cloud</span></div>
+        
+        <div class="kv-row"><span class="kv-key">Cloud</span><span class="kv-val">BTP ABAP Env.</span></div>
+        <div class="kv-row"><span class="kv-key">Status</span><span class="kv-val green">Employed</span></div>
+      </div>
+    </div>
+
+    <div class="card" id="skills">
+      <div class="card-title"><i class="ti ti-layers" aria-hidden="true"></i> Worked SAP Modules</div>
+      <div class="module-grid">
+        <div class="module-chip"><i class="ti ti-chart-bar" aria-hidden="true"></i> FICO</div>
+        <div class="module-chip g"><i class="ti ti-package" aria-hidden="true"></i> MM</div>
+        <div class="module-chip o"><i class="ti ti-truck" aria-hidden="true"></i> SD</div>
+        <div class="module-chip p"><i class="ti ti-cloud" aria-hidden="true"></i> BTP</div>
+        <div class="module-chip"><i class="ti ti-code" aria-hidden="true"></i> EWM</div>
+        <div class="module-chip g"><i class="ti ti-database" aria-hidden="true"></i> HCM </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-cpu" aria-hidden="true"></i> Technical Skills</div>
+      <div class="skill-list">
+        <div class="skill-item">
+          <div class="skill-header"><span class="skill-name">ABAP OO / Classic</span><span class="skill-pct">95%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:95%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span class="skill-name">RAP Framework</span><span class="skill-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span class="skill-name">CDS Views / HANA SQL</span><span class="skill-pct">88%</span></div>
+          <div class="skill-track"><div class="skill-fill g" style="width:88%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span class="skill-name">OData V2 / V4</span><span class="skill-pct">84%</span></div>
+          <div class="skill-track"><div class="skill-fill g" style="width:84%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span class="skill-name">BTP ABAP Env.</span><span class="skill-pct">82%</span></div>
+          <div class="skill-track"><div class="skill-fill o" style="width:82%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span class="skill-name">Fiori / UI5 Ext.</span><span class="skill-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill p" style="width:85%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span class="skill-name">HR ABAP</span><span class="skill-pct">92%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:92%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-tool" aria-hidden="true"></i> Tools</div>
+      <div class="kv">
+        <div class="kv-row"><span class="kv-key">IDE</span><span class="kv-val">ADT, GUI</span></div>
+        <div class="kv-row"><span class="kv-key">Version Control</span><span class="kv-val">abapGit / Git</span></div>
+        <div class="kv-row"><span class="kv-key">Testing</span><span class="kv-val">ABAP Unit / CBTA</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-school" aria-hidden="true"></i> Education</div>
+      <div class="kv">
+        <div class="kv-row"><span class="kv-key">Degree</span><span class="kv-val">Bachelor of Engineering in Computer Science</span></div>
+        <div class="kv-row"><span class="kv-key">Institution</span><span class="kv-val">Mar Ephraem College of Engineering and Technology, Anna University</span></div>
+        <div class="kv-row"><span class="kv-key">Year</span><span class="kv-val">2020 – 2024</span></div>
+      </div>
+    </div>
+
+    <div id="contact" class="card">
+      <div class="card-title"><i class="ti ti-address-card" aria-hidden="true"></i> Contact</div>
+      <div class="avail-badge" style="margin-bottom:14px">
+        <div class="avail-dot"></div>
+        Available for opportunities
+      </div>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:sharun@email.com">
+          <i class="ti ti-mail" aria-hidden="true"></i>
+          <div><div class="cl-label">Email</div><div class="cl-val">sharuns400@gmail.com</div></div>
+        </a>
+        <a class="contact-link" href="https://linkedin.com/in/sharunstephen" target="_blank">
+          <i class="ti ti-brand-linkedin" aria-hidden="true"></i>
+          <div><div class="cl-label">LinkedIn</div><div class="cl-val">linkedin.com/in/sharunstephen</div></div>
+        </a>
+        <a class="contact-link" href="#">
+          <i class="ti ti-map-pin" aria-hidden="true"></i>
+          <div><div class="cl-label">Location</div><div class="cl-val">Bengaluru, Karnataka</div></div>
+        </a>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- ABOUT -->
+    <div class="card">
+      <div class="sec-heading"><i class="ti ti-sparkles" aria-hidden="true"></i> Professional Summary</div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.75;">
+        SAP ABAP Consultant with 8 months of hands-on experience across SAP S/4HANA Public Cloud and Private Cloud environments. Skilled in ABAP development, CDS Views, RAP, OData Services, and SAP BTP ABAP Environment. Experienced in building reports, enhancements, forms, and cloud-ready applications while following clean-core development principles. Continuously learning modern SAP technologies and contributing to projects across FICO, MM, SD, EWM, and HCM modules.
+      </p>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <div class="card" id="experience">
+      <div class="sec-heading"><i class="ti ti-timeline" aria-hidden="true"></i> Experience</div>
+      <div class="exp-list">
+        <div class="exp-item">
+          <div class="exp-timeline">
+            <div class="exp-dot"></div>
+            <div class="exp-line"></div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-role">SAP ABAP Consultant - Trainee</div>
+            <div class="exp-company">Inflexion Infotech - SAP Gold Partner · Bengaluru</div>
+            <div class="exp-dates">2026 April – Present</div>
+            <div class="exp-desc"> BTP ABAP Environment projects, designed RAP-based OData V4 services and CDS views for MM module. Drove clean-core adoption and Fiori extensibility across S/4HANA 2023 landscape.</div>
+            <div class="exp-chips">
+              <span class="chip">BTP ABAP</span><span class="chip">RAP</span><span class="chip">CDS</span><span class="chip">S/4HANA</span><span class="chip">FICO · MM</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="exp-item">
+          <div class="exp-timeline">
+            <div class="exp-dot o"></div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-role">ABAP Developer - Intern</div>
+            <div class="exp-company">Inflexion Infotech - SAP Gold Partner · Bengaluru</div>
+            <div class="exp-dates">2025 Oct – 2026 Mar</div>
+            <div class="exp-desc">Developed classic ABAP reports and ALV grids and Adobe Forms. Implemented user-exits and BADIs for core FICO business processes across multiple client landscapes.</div>
+            <div class="exp-chips">
+              <span class="chip">Classic ABAP</span><span class="chip">ALV</span><span class="chip">BADIs</span><span class="chip">FICO</span><span class="chip">Adobe Forms</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="card" id="projects">
+      <div class="sec-heading"><i class="ti ti-briefcase" aria-hidden="true"></i> Key Projects</div>
+      <div class="proj-list">
+        <div class="proj-card g">
+          <div class="proj-header">
+            <div class="proj-name">BTP ABAP Env — Cloud Procurement Extension</div>
+            <div class="proj-badge ongoing">Ongoing</div>
+          </div>
+          <div class="proj-desc">Cloud-native procurement extension on SAP BTP ABAP Environment using clean core principles. Exposes OData V4 APIs consumed by a Fiori Elements app for PO approval workflows.</div>
+          <div class="exp-chips">
+            <span class="chip">BTP ABAP</span><span class="chip">Fiori Elements</span><span class="chip">OData V4</span><span class="chip">MM</span><span class="chip">Clean Core</span>
+          </div>
+        </div>
+        
+        <div class="proj-card p">
+          <div class="proj-header">
+            <div class="proj-name">Fiori Extensibility — Custom Field Framework</div>
+            <div class="proj-badge">Completed</div>
+          </div>
+          <div class="proj-desc">Extended standard SAP Fiori apps using Key User and Developer Extensibility on S/4HANA Public Cloud. Added custom fields, logic, and UI adaptations across MM and FICO without touching standard code.</div>
+          <div class="exp-chips">
+            <span class="chip">Public Cloud</span><span class="chip">Key User Ext.</span><span class="chip">Developer Ext.</span><span class="chip">Fiori</span>
+          </div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-header">
+            <div class="proj-name">Reporting & Forms Delivery</div>
+            <div class="proj-badge">Completed</div>
+          </div>
+          <div class="proj-desc">Delivered classic ABAP reports, ALV grids, SmartForms, and Adobe Forms across FICO, MM, SD, and HR processes. Improved document generation, reporting accuracy, and user experience for multiple business areas while supporting client rollouts.</div>
+          <div class="exp-chips">
+            <span class="chip">Classic ABAP</span><span class="chip">Adobe Forms</span><span class="chip">SmartForms</span><span class="chip">ALV</span><span class="chip">MM · SD · HR</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+
+
+<script>
+  function toggleMenu() {
+    document.getElementById('mobileNav').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobileNav').classList.remove('open');
+  }
+
+  // Animate skill bars on load
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.skill-fill').forEach(el => {
+      const w = el.style.width;
+      el.style.width = '0';
+      setTimeout(() => { el.style.width = w; }, 200);
+    });
+
+    const quotes = [
+      { text: 'Code is like humor. When you have to explain it, it’s bad.', author: 'Cory House' },
+      { text: 'Experience is the name everyone gives to their mistakes.', author: 'Oscar Wilde' },
+      { text: 'The only way to learn a new programming language is by writing programs in it.', author: 'Dennis Ritchie' },
+      { text: 'Simplicity is the soul of efficiency.', author: 'Austin Freeman' },
+      { text: 'First, solve the problem. Then, write the code.', author: 'John Johnson' }
+    ];
+
+    const quoteText = document.getElementById('quoteText');
+    const quoteAuthor = document.getElementById('quoteAuthor');
+    const quoteCard = document.getElementById('quoteCard');
+    document.querySelectorAll('.card, .proj-card, .cert-item').forEach(el => el.classList.add('reveal'));
+    const revealEls = document.querySelectorAll('.reveal');
+    let quoteIndex = 0;
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    revealEls.forEach(el => revealObserver.observe(el));
+    setTimeout(() => revealEls.forEach(el => el.classList.add('show')), 80);
+
+    const animateQuote = () => {
+      quoteText.classList.add('hide');
+      quoteAuthor.classList.add('hide');
+      quoteCard.classList.add('fade-out');
+
+      setTimeout(() => {
+        quoteIndex = (quoteIndex + 1) % quotes.length;
+        quoteText.textContent = `“${quotes[quoteIndex].text}”`;
+        quoteAuthor.textContent = `— ${quotes[quoteIndex].author}`;
+        quoteText.classList.remove('hide');
+        quoteAuthor.classList.remove('hide');
+        quoteCard.classList.remove('fade-out');
+        quoteCard.classList.add('fade-in');
+
+        setTimeout(() => quoteCard.classList.remove('fade-in'), 450);
+      }, 450);
+    };
+
+    setInterval(animateQuote, 7000);
+  });
+</script>
+</body>
+</html>
